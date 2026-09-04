@@ -92,8 +92,29 @@ static void drawFace(void) {
         printf("(^_^)\n");
     }
 }
-static void    drawStat(const char *label, uint8_t value){}
-static void    feed(void){}
+
+static void drawStat(const char *label, uint8_t value) {
+    printf("%s: ", label);
+    for (uint8_t i = 0; i < STAT_MAX; i++) {
+        putchar(i < value ? '#' : '-');
+    }
+    printf(" %u\n", value);
+}
+
+static void feed(void) {
+    if (READ_BIT(fluffy.mood, BIT_ASLEEP)) {
+        printf("Fluffy is asleep!\n");
+        return;
+    }
+    if (fluffy.food == STAT_MAX) {
+        SET_BIT(fluffy.mood, BIT_SICK);
+        printf("Fluffy ate too much and got sick!\n");
+        return;
+    }
+    fluffy.food += 3;
+    if (fluffy.food > STAT_MAX) fluffy.food = STAT_MAX;
+}
+
 static void    play(void){}
 static void    sleepPet(void){}
 static void    hourPasses(void){}
