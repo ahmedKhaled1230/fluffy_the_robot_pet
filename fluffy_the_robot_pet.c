@@ -138,7 +138,30 @@ static void sleepPet(void) {
         printf("Fluffy went to sleep!\n");
     }
 }
-static void    hourPasses(void){}
-static void    updateMood(void){}
+static void hourPasses(void) {
+    fluffy.hours++;
+    if (!READ_BIT(fluffy.mood, BIT_ASLEEP)) {
+        if (fluffy.food > 0) fluffy.food--;
+        if (fluffy.fun > 0) fluffy.fun--;
+        if (fluffy.energy > 0) fluffy.energy--;
+    } else {
+        if (fluffy.energy + 2 <= STAT_MAX) fluffy.energy += 2;
+        else fluffy.energy = STAT_MAX;
+        CLR_BIT(fluffy.mood, BIT_SICK); // sickness clears after sleep
+    }
+    updateMood();
+}
+
+static void updateMood(void) {
+    if (fluffy.food <= LOW_WARNING) SET_BIT(fluffy.mood, BIT_HUNGRY);
+    else CLR_BIT(fluffy.mood, BIT_HUNGRY);
+
+    if (fluffy.fun <= LOW_WARNING) SET_BIT(fluffy.mood, BIT_SAD);
+    else CLR_BIT(fluffy.mood, BIT_SAD);
+
+    if (fluffy.energy == 0) SET_BIT(fluffy.mood, BIT_ASLEEP);
+    else if (!READ_BIT(fluffy.mood, BIT_ASLEEP)) CLR_BIT(fluffy.mood, BIT_ASLEEP);
+}
+
 static uint8_t isHappy(void){}
 static void    petReport(void){}
