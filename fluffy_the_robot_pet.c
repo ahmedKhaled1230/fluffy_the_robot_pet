@@ -163,5 +163,23 @@ static void updateMood(void) {
     else if (!READ_BIT(fluffy.mood, BIT_ASLEEP)) CLR_BIT(fluffy.mood, BIT_ASLEEP);
 }
 
-static uint8_t isHappy(void){}
-static void    petReport(void){}
+static uint8_t isHappy(void) {
+    return (fluffy.food > LOW_WARNING &&
+            fluffy.fun > LOW_WARNING &&
+            fluffy.energy > LOW_WARNING &&
+            fluffy.mood == 0);
+}
+
+static void petReport(void) {
+    printf("\n[Pet Report]\n");
+    printf("Name: %s | Hours alive: %u\n", fluffy.name, fluffy.hours);
+    drawStat("Food", fluffy.food);
+    drawStat("Fun", fluffy.fun);
+    drawStat("Energy", fluffy.energy);
+    printf("Mood byte: 0x%02X\n", fluffy.mood);
+    if (isHappy()) {
+        printf("Fluffy is happy!\n");
+    } else {
+        printf("Fluffy needs care!\n");
+    }
+}
