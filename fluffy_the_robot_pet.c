@@ -115,8 +115,29 @@ static void feed(void) {
     if (fluffy.food > STAT_MAX) fluffy.food = STAT_MAX;
 }
 
-static void    play(void){}
-static void    sleepPet(void){}
+static void play(void) {
+    if (READ_BIT(fluffy.mood, BIT_ASLEEP)) {
+        printf("Fluffy is asleep!\n");
+        return;
+    }
+    fluffy.fun += 3;
+    if (fluffy.fun > STAT_MAX) fluffy.fun = STAT_MAX;
+    if (fluffy.energy >= 2) {
+        fluffy.energy -= 2;
+    } else {
+        fluffy.energy = 0;
+    }
+}
+
+static void sleepPet(void) {
+    if (READ_BIT(fluffy.mood, BIT_ASLEEP)) {
+        CLR_BIT(fluffy.mood, BIT_ASLEEP);
+        printf("Fluffy woke up!\n");
+    } else {
+        SET_BIT(fluffy.mood, BIT_ASLEEP);
+        printf("Fluffy went to sleep!\n");
+    }
+}
 static void    hourPasses(void){}
 static void    updateMood(void){}
 static uint8_t isHappy(void){}
