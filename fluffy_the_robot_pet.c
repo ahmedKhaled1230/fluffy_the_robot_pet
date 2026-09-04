@@ -70,8 +70,28 @@ int main(void) {
     return 0;
 }
 
-static void    hatchPet(void){}
-static void    drawFace(void){}
+static void hatchPet(void) {
+    printf("Enter pet name: ");
+    scanf("%11s", fluffy.name);
+    fluffy.food = STAT_MAX;
+    fluffy.fun = STAT_MAX;
+    fluffy.energy = STAT_MAX;
+    fluffy.mood = 0;
+    fluffy.hours = 0;
+}
+
+static void drawFace(void) {
+    printf("\n[Fluffy's Face]\n");
+    if (READ_BIT(fluffy.mood, BIT_ASLEEP)) {
+        printf("(-_-) zzz\n");
+    } else if (READ_BIT(fluffy.mood, BIT_SICK)) {
+        printf("(x_x)\n");
+    } else if (READ_BIT(fluffy.mood, BIT_SAD)) {
+        printf("(:-( )\n");
+    } else {
+        printf("(^_^)\n");
+    }
+}
 static void    drawStat(const char *label, uint8_t value){}
 static void    feed(void){}
 static void    play(void){}
